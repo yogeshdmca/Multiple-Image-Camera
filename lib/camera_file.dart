@@ -1,13 +1,20 @@
 import 'dart:async';
 import 'dart:io';
-import "package:flutter/material.dart";
+
 import "package:camera/camera.dart";
+import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:multiple_image_camera/image_preview.dart';
 
 class CameraFile extends StatefulWidget {
   final Widget? customButton;
-  const CameraFile({super.key, this.customButton});
+  final int minImages;
+  final int imageCounter;
+  const CameraFile(
+      {super.key,
+      this.customButton,
+      required this.minImages,
+      this.imageCounter = 0});
 
   @override
   State<CameraFile> createState() => _CameraFileState();
@@ -40,32 +47,32 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
     });
   }
 
-  removeImage() {
+  removeImage(int index) {
     setState(() {
-      imageFiles.removeLast();
+      imageFiles.removeAt(index);
     });
   }
 
   Widget? _animatedButton({Widget? customContent}) {
-    return customContent != null
-        ? customContent
-        : Container(
-            height: 70,
-            width: 150,
-            decoration: BoxDecoration(
-              color: Colors.white38,
-              borderRadius: BorderRadius.circular(100.0),
-            ),
-            child: const Center(
-              child: Text(
-                'Done',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+    return customContent ??
+        Container(
+          height: 50,
+          width: 120,
+          decoration: BoxDecoration(
+            color: const Color(0xffF5B128),
+            borderRadius: BorderRadius.circular(100.0),
+          ),
+          child: const Center(
+            child: Text(
+              'Done',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
-          );
+          ),
+        );
   }
 
   Future<void> _initCamera() async {
@@ -113,56 +120,13 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
                   return Row(
                     children: <Widget>[
                       Container(
-                        alignment: Alignment.bottomLeft,
-                        // ignore: unnecessary_null_comparison
-                        child: imageFiles[index] == null
-                            ? const Text("No image captured")
-                            : imageFiles.length - 1 == index
-                                ? ScaleTransition(
-                                    scale: scaleAnimation,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        ImagePreviewView(
-                                                          File(imageFiles[index]
-                                                              .path),
-                                                          "",
-                                                        )));
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          Image.file(
-                                            File(
-                                              imageFiles[index].path,
-                                            ),
-                                            height: 90,
-                                            width: 60,
-                                          ),
-                                          Positioned(
-                                            top: 0,
-                                            right: 0,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  removeImage();
-                                                });
-                                              },
-                                              child: Image.network(
-                                                "https://logowik.com/content/uploads/images/close1437.jpg",
-                                                height: 30,
-                                                width: 30,
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : GestureDetector(
+                          alignment: Alignment.bottomLeft,
+                          // ignore: unnecessary_null_comparison
+                          child: imageFiles[index] == null
+                              ? const Text("No image captured")
+                              : ScaleTransition(
+                                  scale: scaleAnimation,
+                                  child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                           context,
@@ -174,15 +138,54 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
                                                     "",
                                                   )));
                                     },
-                                    child: Image.file(
-                                      File(
-                                        imageFiles[index].path,
-                                      ),
-                                      height: 90,
-                                      width: 60,
+                                    child: Stack(
+                                      children: [
+                                        Image.file(
+                                          File(
+                                            imageFiles[index].path,
+                                          ),
+                                          height: 90,
+                                          width: 60,
+                                        ),
+                                        Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () {
+                                              removeImage(index);
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          left: 0,
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: Text(
+                                                "${index + 1}",
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
-                      )
+                                ))
                     ],
                   );
                 }),
@@ -339,6 +342,17 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+                imageFiles.length > widget.minImages - widget.imageCounter
+                    ? "${imageFiles.length} images"
+                    : "${imageFiles.length} / ${widget.minImages - widget.imageCounter} images",
+                style: const TextStyle(color: Colors.black, fontSize: 16),
+                textAlign: TextAlign.left),
+          ],
+        ),
         actions: [
           imageFiles.isNotEmpty
               ? GestureDetector(
@@ -357,9 +371,9 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
               : const SizedBox()
         ],
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white.withOpacity(0.5),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       extendBody: true,
       body: _buildCameraPreview(),
     );

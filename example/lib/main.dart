@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:multiple_image_camera/camera_file.dart';
 import 'package:multiple_image_camera/multiple_image_camera.dart';
@@ -47,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () async {
               MultipleImageCamera.capture(
                 context: context,
+                minImages: 5,
+                imageCounter: 2,
               ).then((value) {
                 setState(() {
                   images = value;

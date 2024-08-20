@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -35,7 +36,7 @@ class _ImagePreviewViewState extends State<ImagePreviewView> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xffF5B128),
         elevation: 1,
         title: Text(
           widget.imageTitle,
@@ -73,7 +74,7 @@ class _ImagePreviewViewState extends State<ImagePreviewView> {
     var decodedImage;
 
     decodedImage = await decodeImageFromList(widget.file.readAsBytesSync());
-   
+
     return decodedImage.width.toDouble();
   }
 }
