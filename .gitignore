@@ -1,0 +1,22 @@
+# Local Flutter/Dart state and build output.
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+.pub-cache/
+**/build/
+**/Flutter/ephemeral/
+**/Pods/
+**/.symlinks/
+**/.gradle/
+**/local.properties
+
+# Package lockfile is local; the example app lockfile remains versioned.
+/pubspec.lock
+
+# Editor and OS files.
+.idea/
+*.iml
+.DS_Store
+*.log

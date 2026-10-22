@@ -1,16 +1,24 @@
-# example
+# multiple_image_camera example
 
-A new Flutter project.
+This application opens the package's camera screen and displays the returned
+photos in a list.
 
-## Getting Started
+## Run
 
-This project is a starting point for a Flutter application.
+From this directory:
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+flutter pub get
+flutter run
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Use an Android or iOS device with a camera and allow camera access when prompted.
+For native permission and minimum-platform configuration, see the package's
+[setup instructions](../README.md#installation).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Tap **Capture**, take one or more photos, then tap **Done** to return them to the
+example application. Tap an image thumbnail in the camera screen to preview it.
+
+The example depends on the package using `path: ../`, so it runs the local source.
+Physical-device validation is required for camera switching, zoom, permission
+handling, and repeated capture sessions.
