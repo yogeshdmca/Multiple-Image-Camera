@@ -22,22 +22,21 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
   List<XFile> imageFiles = [];
   List<MediaModel> imageList = <MediaModel>[];
   late int _currIndex;
-  late Animation<double> animation;
   late AnimationController _animationController;
   late Animation<double> scaleAnimation;
 
-  addImages(XFile image) {
+
+  void addImages(XFile image) {
+    if (!mounted) return;
+
     setState(() {
       imageFiles.add(image);
-      animation = Tween<double>(begin: 400, end: 1).animate(scaleAnimation =
-          CurvedAnimation(
-              parent: _animationController, curve: Curves.elasticOut))
-        ..addListener(() {});
-      _animationController.forward();
     });
+
+    _animationController.forward(from: 0.0);
   }
 
-  removeImage() {
+  void removeImage() {
     setState(() {
       imageFiles.removeLast();
     });
@@ -77,15 +76,29 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
       });
     } else {}
   }
-
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
-    _initCamera();
-    _currIndex = 0;
-
     super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    scaleAnimation = Tween<double>(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.elasticOut,
+      ),
+    );
+
+    _currIndex = 0;
+    _initCamera();
   }
+
 
   Widget _buildCameraPreview() {
     return GestureDetector(
@@ -302,18 +315,29 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
     }
   }
 
-  takePicture() async {
-    if (_controller!.value.isTakingPicture) {
-      return null;
+  Future<void> takePicture() async {
+    final controller = _controller;
+
+    // Check whether the camera is ready.
+    if (controller == null ||
+        !controller.value.isInitialized ||
+        controller.value.isTakingPicture) {
+      return;
     }
+
     try {
-      final image = await _controller!.takePicture();
-      setState(() {
-        addImages(image);
-        HapticFeedback.lightImpact();
-      });
-    } on CameraException {
-      return null;
+      final XFile image = await controller.takePicture();
+
+      // Avoid updating a disposed widget.
+      if (!mounted) return;
+
+      // addImages() already handles setState().
+      addImages(image);
+
+      // Provide feedback after capturing.
+      HapticFeedback.lightImpact();
+    } on CameraException catch (e) {
+      debugPrint('Camera capture error: ${e.description}');
     }
   }
 
