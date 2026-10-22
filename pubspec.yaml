@@ -1,11 +1,13 @@
 name: multiple_image_camera
-description: A Flutter package for both android and iOS which provides Take Multiple Images from Camera.
-version: 0.0.2
-homepage: https://github.com/Adbhutashra26/Multiple-Image-Camera.git
+description: Capture multiple photos in one camera session on Android and iOS, with image previews, pinch-to-zoom, camera switching, and a custom Done widget.
+version: 0.0.3
+homepage: https://github.com/yogeshdmca/Multiple-Image-Camera
+repository: https://github.com/yogeshdmca/Multiple-Image-Camera
+issue_tracker: https://github.com/yogeshdmca/Multiple-Image-Camera/issues
 
 environment:
-  sdk: '>=2.19.1 <4.0.0'
-  flutter: ">=1.17.0"
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.10.0"
 
 dependencies:
   camera: ^0.10.5+6

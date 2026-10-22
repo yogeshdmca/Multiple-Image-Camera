@@ -28,3 +28,14 @@ migrate_working_dir/
 .dart_tool/
 .packages
 build/
+
+# Generated host files at the package root are not package implementation.
+/android/
+/ios/
+/macos/
+/windows/
+.flutter-plugins
+.flutter-plugins-dependencies
+**/Flutter/ephemeral/
+**/Pods/
+**/local.properties

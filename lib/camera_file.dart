@@ -47,9 +47,7 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
   }
 
   Widget? _animatedButton({Widget? customContent}) {
-    return customContent != null
-        ? customContent
-        : Container(
+    return customContent ?? Container(
             height: 70,
             width: 150,
             decoration: BoxDecoration(
