@@ -35,6 +35,15 @@ class _ImagePreviewViewState extends State<ImagePreviewView> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
+        leading: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.black54,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white70),
+          ),
+          child: const BackButton(color: Colors.white),
+        ),
         backgroundColor: Colors.black87,
         elevation: 1,
         title: Text(
