@@ -35,7 +35,7 @@ class _ImagePreviewViewState extends State<ImagePreviewView> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black87,
         elevation: 1,
         title: Text(
           widget.imageTitle,
@@ -48,7 +48,7 @@ class _ImagePreviewViewState extends State<ImagePreviewView> {
         height: double.infinity,
         width: double.infinity,
         alignment: Alignment.center,
-        color: Colors.black,
+        color: const Color(0xFF303030),
         child: SafeArea(
           child: SingleChildScrollView(
               reverse: true,

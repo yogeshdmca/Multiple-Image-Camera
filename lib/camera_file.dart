@@ -154,16 +154,21 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
                                           Positioned(
                                             top: 0,
                                             right: 0,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  removeImage();
-                                                });
-                                              },
-                                              child: Image.network(
-                                                "https://logowik.com/content/uploads/images/close1437.jpg",
-                                                height: 30,
-                                                width: 30,
+                                            child: Material(
+                                              color: Colors.black87,
+                                              shape: const CircleBorder(),
+                                              child: InkWell(
+                                                customBorder:
+                                                    const CircleBorder(),
+                                                onTap: () => removeImage(),
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(3),
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    size: 20,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           )
@@ -359,6 +364,15 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        leading: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.black54,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white70),
+          ),
+          child: const BackButton(color: Colors.white),
+        ),
         actions: [
           imageFiles.isNotEmpty
               ? GestureDetector(
@@ -377,7 +391,7 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
               : const SizedBox()
         ],
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black38,
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       extendBody: true,
