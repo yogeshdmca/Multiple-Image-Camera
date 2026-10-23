@@ -2,10 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// Displays a captured image with pan and zoom controls.
 class ImagePreviewView extends StatefulWidget {
+  /// Image file to display.
   final File file;
+
+  /// Text shown in the preview app bar.
   final String imageTitle;
 
+  /// Creates an image preview for [file] with the given [imageTitle].
   const ImagePreviewView(this.file, this.imageTitle, {super.key});
 
   @override
@@ -82,7 +87,7 @@ class _ImagePreviewViewState extends State<ImagePreviewView> {
     var decodedImage;
 
     decodedImage = await decodeImageFromList(widget.file.readAsBytesSync());
-   
+
     return decodedImage.width.toDouble();
   }
 }

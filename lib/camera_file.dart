@@ -5,8 +5,12 @@ import "package:camera/camera.dart";
 import 'package:flutter/services.dart';
 import 'package:multiple_image_camera/image_preview.dart';
 
+/// Camera capture screen used by the package's capture workflow.
 class CameraFile extends StatefulWidget {
+  /// Optional replacement for the default Done button.
   final Widget? customButton;
+
+  /// Creates a camera capture screen.
   const CameraFile({super.key, this.customButton});
 
   @override
@@ -25,7 +29,6 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> scaleAnimation;
 
-
   void addImages(XFile image) {
     if (!mounted) return;
 
@@ -43,23 +46,24 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
   }
 
   Widget? _animatedButton({Widget? customContent}) {
-    return customContent ?? Container(
-            height: 70,
-            width: 150,
-            decoration: BoxDecoration(
-              color: Colors.white38,
-              borderRadius: BorderRadius.circular(100.0),
+    return customContent ??
+        Container(
+          height: 70,
+          width: 150,
+          decoration: BoxDecoration(
+            color: Colors.white38,
+            borderRadius: BorderRadius.circular(100.0),
+          ),
+          child: const Center(
+            child: Text(
+              'Done',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
-            child: const Center(
-              child: Text(
-                'Done',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-            ),
-          );
+          ),
+        );
   }
 
   Future<void> _initCamera() async {
@@ -76,6 +80,7 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
       });
     } else {}
   }
+
   @override
   void initState() {
     super.initState();
@@ -98,7 +103,6 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
     _currIndex = 0;
     _initCamera();
   }
-
 
   Widget _buildCameraPreview() {
     return GestureDetector(
@@ -393,7 +397,7 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
         elevation: 0,
         backgroundColor: Colors.black38,
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       extendBody: true,
       body: _buildCameraPreview(),
     );
@@ -407,9 +411,17 @@ class _CameraFileState extends State<CameraFile> with TickerProviderStateMixin {
   }
 }
 
+/// A captured image returned by the package's capture workflow.
 class MediaModel {
+  /// Image file containing the captured photo.
   File file;
+
+  /// Optional path metadata associated with the image.
   String filePath;
+
+  /// Encoded image bytes for convenient use by the caller.
   Uint8List blobImage;
+
+  /// Creates a model containing its file, path, and encoded bytes.
   MediaModel.blob(this.file, this.filePath, this.blobImage);
 }
