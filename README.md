@@ -211,7 +211,7 @@ does not save photos to the system gallery automatically.
 
 ## Example
 
-The [example application](example/lib/main.dart) demonstrates opening the camera
+The [example application](https://github.com/yogeshdmca/Multiple-Image-Camera/blob/master/example/lib/main.dart) demonstrates opening the camera
 and displaying returned images.
 
 ```bash
@@ -222,4 +222,4 @@ flutter run
 
 ## License
 
-BSD-3-Clause. See [LICENSE](LICENSE) for the full terms and copyright notice.
+BSD-3-Clause. See [LICENSE](https://github.com/yogeshdmca/Multiple-Image-Camera/blob/master/LICENSE) for the full terms and copyright notice.
